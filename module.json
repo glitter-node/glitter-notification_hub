@@ -1,0 +1,23 @@
+{
+    "identifier": "glitter-notification_hub",
+    "vendor": "Glitter.kr",
+    "name": {
+        "ko": "알림 허브",
+        "en": "Notification Hub"
+    },
+    "version": "0.8.5",
+    "license": "proprietary",
+    "description": {
+        "ko": "코어 알림 전달 오케스트레이션 모듈",
+        "en": "Delivery orchestration module for core notifications"
+    },
+    "g7_version": ">=7.0.0",
+    "dependencies": {
+        "modules": {},
+        "plugins": {}
+    },
+    "assets": {
+        "js": [],
+        "css": []
+    }
+}

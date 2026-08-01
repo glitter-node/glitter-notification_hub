@@ -1,0 +1,8 @@
+{"version":"1.0.0","routes":[
+ {"id":"notification_hub_plans","path":"*/admin/modules/glitter-notification_hub/plans","layout":"plans","auth_required":true,"permissions":["glitter-notification_hub.plans.read"],"meta":{"title":"$t:glitter-notification_hub.admin.pages.plans.title"}},
+ {"id":"notification_hub_plan_detail","path":"*/admin/modules/glitter-notification_hub/plans/:id","layout":"plan_detail","auth_required":true,"permissions":["glitter-notification_hub.plans.read"],"meta":{"title":"$t:glitter-notification_hub.admin.pages.plan_detail.title"}},
+ {"id":"notification_hub_attempts","path":"*/admin/modules/glitter-notification_hub/attempts","layout":"attempts","auth_required":true,"permissions":["glitter-notification_hub.attempts.read"],"meta":{"title":"$t:glitter-notification_hub.admin.pages.attempts.title"}},
+ {"id":"notification_hub_attempt_detail","path":"*/admin/modules/glitter-notification_hub/attempts/:id","layout":"attempt_detail","auth_required":true,"permissions":["glitter-notification_hub.attempts.read"],"meta":{"title":"$t:glitter-notification_hub.admin.pages.attempt_detail.title"}},
+ {"id":"notification_hub_dead_letters","path":"*/admin/modules/glitter-notification_hub/dead-letters","layout":"dead_letters","auth_required":true,"permissions":["glitter-notification_hub.dead-letters.read"],"meta":{"title":"$t:glitter-notification_hub.admin.pages.dead_letters.title"}},
+ {"id":"notification_hub_dead_letter_detail","path":"*/admin/modules/glitter-notification_hub/dead-letters/:id","layout":"dead_letter_detail","auth_required":true,"permissions":["glitter-notification_hub.dead-letters.read"],"meta":{"title":"$t:glitter-notification_hub.admin.pages.dead_letter_detail.title"}}
+]}

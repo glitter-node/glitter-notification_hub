@@ -1,0 +1,71 @@
+feature: Notification Hub Plan and Delivery Attempt domain
+
+description: |
+  One Plan represents one recipient and one channel delivery intent. Attempts record
+  individual delivery tries without replacing core notification logs.
+
+axes:
+  recipient_type: [user, guest]
+  channel: [mail, database]
+  schedule: [immediate, future]
+  retry_policy: [none, standard]
+  duplicate_request: [first, duplicate]
+  terminal_outcome: [accepted, failed, skipped, cancelled, expired]
+  initial_state: [pending, scheduled, retry_scheduled, claimed, processing, terminal]
+  transition: [process, accept, retry, fail, skip, cancel, expire]
+  duplicate: [first, duplicate]
+  expiry: [active, expired]
+  metadata: [clean, sensitive, excessive-depth]
+  hub_enabled: [false, true]
+  external_delivery: [false, true]
+  recipient: [existing-user, missing-user, guest-supported, guest-unsupported]
+  policy: [allowed, definition-inactive, template-inactive, channel-disabled, readiness-failed, guest-disallowed]
+  core_outcome: [accepted, failed]
+  correlation: [matched, unmatched]
+  plan_due: [immediate, future-scheduled, future-retry, expired]
+  claim: [available, already-claimed, expired-claim, token-mismatch]
+  queue: [disabled, enabled-sync, enabled-async]
+  retry: [disabled, none, standard, aggressive, exhausted]
+  failure: [transient, permanent, infrastructure]
+  dead_letter: [created, not-created, resolved]
+  admin_action: [list, view, cancel, manual-retry, resolve-dead-letter, retry-dead-letter]
+  actor_permission: [allowed, denied]
+  source_plan: [pending, scheduled, claimed, processing, accepted, skipped, failed, cancelled, expired]
+  retry_request: [first, duplicate-request-id]
+  dead_letter_admin_state: [unresolved, resolved]
+  sensitive_payload: [absent, present]
+
+effects:
+  - one_plan_is_created_per_recipient_and_channel
+  - duplicate_identity_is_rejected_by_the_unique_constraint
+  - future_plan_retains_its_scheduled_timestamp
+  - attempt_numbers_are_unique_within_a_plan
+  - accepted_means_core_channel_call_completed_without_exception
+  - terminal_plan_status_is_preserved_for_audit
+  - plan_status_matches_the_transition_policy
+  - attempt_status_matches_the_lifecycle
+  - attempt_count_increments_atomically_with_attempt_creation
+  - next_attempt_at_is_recorded_for_retry
+  - terminal_timestamp_is_recorded
+  - metadata_is_sanitized
+  - notification_delivery_count_is_zero
+  - webhook_delivery_count_is_zero
+  - correlation_scope_count_after_completion_is_zero
+  - claim_token_is_scoped_to_one_dispatch
+  - claim_token_is_consumed_atomically_with_processing_transition
+  - claimed_policy_or_recipient_skip_creates_zero_attempts
+  - stale_or_reclaimed_token_cannot_deliver
+  - claimed_at_is_recorded
+  - job_dispatch_count_is_observable
+  - dead_letter_count_matches_terminal_failures
+  - manual_retry_creates_a_new_linked_plan
+  - original_plan_status_is_unchanged_by_retry
+  - admin_activity_hook_count_is_observable
+  - sensitive_fields_exposed_is_zero
+
+test_files:
+  - modules/_bundled/glitter-notification_hub/tests/Unit/Repositories/PlanRepositoryTest.php
+  - modules/_bundled/glitter-notification_hub/tests/Unit/Repositories/AttemptRepositoryTest.php
+
+validation:
+  execution: deferred_until_an_isolated_testing_database_is_configured

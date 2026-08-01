@@ -1,0 +1,2 @@
+<?php
+namespace Modules\Glitter\NotificationHub\Tests\Unit\Resources\Admin;use PHPUnit\Framework\TestCase;class NotificationPlanResourceTest extends TestCase{public function test_sensitive_fields_are_not_in_response_contract():void{$s=file_get_contents(dirname(__DIR__,4).'/src/Http/Resources/Admin/NotificationPlanResource.php');foreach(['idempotency_hash','recipient_identifier_hash','recipient_identity_hash','claim_token'] as $key)$this->assertStringNotContainsString("'$key'=>",$s);}}

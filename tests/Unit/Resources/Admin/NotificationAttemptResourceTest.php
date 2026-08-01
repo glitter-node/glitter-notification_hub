@@ -1,0 +1,2 @@
+<?php
+namespace Modules\Glitter\NotificationHub\Tests\Unit\Resources\Admin;use PHPUnit\Framework\TestCase;class NotificationAttemptResourceTest extends TestCase{public function test_raw_metadata_is_absent():void{$s=file_get_contents(dirname(__DIR__,4).'/src/Http/Resources/Admin/NotificationAttemptResource.php');$this->assertStringNotContainsString("'request_metadata'=>",$s);$this->assertStringNotContainsString("'response_metadata'=>",$s);}}

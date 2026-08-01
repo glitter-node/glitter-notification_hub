@@ -1,0 +1,21 @@
+{
+    "name": "glitter/notification-hub",
+    "description": "Notification delivery orchestration module for GlitterView",
+    "type": "library",
+    "version": "0.8.5",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Modules\\Glitter\\NotificationHub\\": "src/",
+            "Modules\\Glitter\\NotificationHub\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Glitter\\NotificationHub\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.2"
+    }
+}

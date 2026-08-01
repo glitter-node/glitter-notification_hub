@@ -1,0 +1,2 @@
+<?php
+namespace Modules\Glitter\NotificationHub\Tests\Unit\DTO\Admin;use Modules\Glitter\NotificationHub\DTO\Admin\NotificationPlanSearchData;use PHPUnit\Framework\TestCase;class NotificationPlanSearchDataTest extends TestCase{public function test_defaults_and_filters():void{$d=NotificationPlanSearchData::fromArray(['status'=>'failed']);$this->assertSame('-created_at',$d->sort);$this->assertSame(['status'=>'failed'],$d->filters);}}
