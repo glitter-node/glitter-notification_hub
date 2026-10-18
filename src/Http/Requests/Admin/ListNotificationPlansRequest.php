@@ -1,0 +1,6 @@
+<?php
+namespace Modules\Glitter\NotificationHub\Http\Requests\Admin;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Modules\Glitter\NotificationHub\Enums\PlanStatus;
+class ListNotificationPlansRequest extends FormRequest { public function authorize():bool{return true;} public function rules():array{return ['status'=>['nullable',Rule::enum(PlanStatus::class)],'definition_type'=>'nullable|string|max:100','channel'=>'nullable|string|max:50','extension_type'=>'nullable|in:core,module,plugin','extension_identifier'=>'nullable|string|max:100','recipient_type'=>'nullable|in:user,guest,role,webhook','source_type'=>'nullable|string|max:100','source_id'=>'nullable|string|max:191','correlation_id'=>'nullable|uuid','created_from'=>'nullable|date','created_to'=>'nullable|date|after_or_equal:created_from','scheduled_from'=>'nullable|date','scheduled_to'=>'nullable|date|after_or_equal:scheduled_from','has_dead_letter'=>'nullable|boolean','search'=>'nullable|string|max:191','sort'=>['nullable',Rule::in(['created_at','-created_at','scheduled_at','-scheduled_at','next_attempt_at','-next_attempt_at','accepted_at','-accepted_at','failed_at','-failed_at','attempt_count','-attempt_count'])],'per_page'=>'nullable|integer|min:1|max:100'];} }

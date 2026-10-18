@@ -1,0 +1,52 @@
+{
+  "version": "1.0.0",
+  "layout_name": "plans",
+  "permissions": ["glitter-notification_hub.plans.read"],
+  "extends": "_admin_base",
+  "meta": {
+    "title": "$t:glitter-notification_hub.admin.pages.plans.title",
+    "description": "$t:glitter-notification_hub.admin.pages.plans.description"
+  },
+  "state": {"status":"","channel":"","definitionType":"","search":"","createdFrom":"","createdTo":"","page":1,"perPage":20},
+  "data_sources": [{
+    "id": "plans", "type": "api", "endpoint": "/api/modules/glitter-notification_hub/admin/plans", "method": "GET", "auto_fetch": true, "auth_required": true,
+    "params": {"status":"{{_local.status}}","channel":"{{_local.channel}}","definition_type":"{{_local.definitionType}}","search":"{{_local.search}}","created_from":"{{_local.createdFrom}}","created_to":"{{_local.createdTo}}","page":"{{_local.page}}","per_page":"{{_local.perPage}}"},
+    "errorHandling": {"403":{"handler":"showErrorPage","params":{"target":"content"}},"default":{"handler":"showErrorPage","params":{"target":"content"}}}
+  }],
+  "slots": {"content": [{
+    "id": "plans_page", "type": "basic", "name": "Div", "props": {"className":"admin-page-content"},
+    "responsive": {"portable":{"props":{"className":"admin-page-content-compact"}}},
+    "children": [
+      {"id":"plans_header","type":"composite","name":"PageHeader","props":{"title":"$t:glitter-notification_hub.admin.pages.plans.title","description":"$t:glitter-notification_hub.admin.pages.plans.description"}},
+      {"id":"plans_filters","type":"basic","name":"Div","props":{"className":"admin-card"},"children":[
+        {"id":"plans_filter_row","type":"basic","name":"Div","props":{"className":"flex flex-wrap items-end gap-4"},"children":[
+          {"type":"basic","name":"Div","props":{"className":"flex flex-col gap-2 w-full sm:w-48"},"children":[
+            {"type":"basic","name":"Span","text":"$t:glitter-notification_hub.admin.labels.status"},
+            {"id":"plans_status","type":"basic","name":"Select","props":{"value":"{{_local.status}}","aria-label":"$t:glitter-notification_hub.admin.labels.status","options":[
+              {"value":"","label":"$t:glitter-notification_hub.admin.filters.all_statuses"},{"value":"pending","label":"$t:glitter-notification_hub.admin.statuses.plan.pending"},{"value":"scheduled","label":"$t:glitter-notification_hub.admin.statuses.plan.scheduled"},{"value":"retry_scheduled","label":"$t:glitter-notification_hub.admin.statuses.plan.retry_scheduled"},{"value":"claimed","label":"$t:glitter-notification_hub.admin.statuses.plan.claimed"},{"value":"processing","label":"$t:glitter-notification_hub.admin.statuses.plan.processing"},{"value":"accepted","label":"$t:glitter-notification_hub.admin.statuses.plan.accepted"},{"value":"skipped","label":"$t:glitter-notification_hub.admin.statuses.plan.skipped"},{"value":"failed","label":"$t:glitter-notification_hub.admin.statuses.plan.failed"},{"value":"cancelled","label":"$t:glitter-notification_hub.admin.statuses.plan.cancelled"},{"value":"expired","label":"$t:glitter-notification_hub.admin.statuses.plan.expired"}
+            ]},"actions":[{"type":"change","handler":"setState","params":{"target":"_local","status":"{{$event.target.value}}","page":1}},{"type":"change","handler":"refetchDataSource","params":{"dataSourceId":"plans"}}]}
+          ]},
+          {"type":"basic","name":"Div","props":{"className":"flex flex-col gap-2 w-full sm:w-48"},"children":[
+            {"type":"basic","name":"Span","text":"$t:glitter-notification_hub.admin.labels.channel"},
+            {"id":"plans_channel","type":"basic","name":"Select","props":{"value":"{{_local.channel}}","aria-label":"$t:glitter-notification_hub.admin.labels.channel","options":[{"value":"","label":"$t:glitter-notification_hub.admin.filters.all_channels"},{"value":"mail","label":"$t:glitter-notification_hub.admin.channels.mail"},{"value":"database","label":"$t:glitter-notification_hub.admin.channels.database"}]},"actions":[{"type":"change","handler":"setState","params":{"target":"_local","channel":"{{$event.target.value}}","page":1}},{"type":"change","handler":"refetchDataSource","params":{"dataSourceId":"plans"}}]}
+          ]},
+          {"type":"basic","name":"Div","props":{"className":"flex flex-col gap-2 w-full sm:w-48"},"children":[
+            {"type":"basic","name":"Span","text":"$t:glitter-notification_hub.admin.labels.definition_type"},
+            {"id":"plans_definition_type","type":"basic","name":"Input","props":{"type":"text","value":"{{_local.definitionType}}","placeholder":"$t:glitter-notification_hub.admin.placeholders.definition_type","aria-label":"$t:glitter-notification_hub.admin.labels.definition_type","className":"bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600"},"actions":[{"type":"change","handler":"setState","params":{"target":"_local","definitionType":"{{$event.target.value}}","page":1}},{"type":"keypress","key":"Enter","handler":"refetchDataSource","params":{"dataSourceId":"plans"}}]}
+          ]},
+          {"type":"basic","name":"Div","props":{"className":"flex flex-col gap-2 flex-1 min-w-48"},"children":[
+            {"type":"basic","name":"Span","text":"$t:glitter-notification_hub.admin.labels.search"},
+            {"id":"plans_search","type":"basic","name":"Input","props":{"type":"search","value":"{{_local.search}}","placeholder":"$t:glitter-notification_hub.admin.placeholders.search","aria-label":"$t:glitter-notification_hub.admin.labels.search","className":"bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-600"},"actions":[{"type":"change","handler":"setState","params":{"target":"_local","search":"{{$event.target.value}}","page":1}},{"type":"keypress","key":"Enter","handler":"refetchDataSource","params":{"dataSourceId":"plans"}}]}
+          ]},
+          {"id":"plans_apply_filters","type":"basic","name":"Button","props":{"type":"button","className":"btn btn-primary"},"text":"$t:glitter-notification_hub.admin.actions.apply_filters","actions":[{"type":"click","handler":"refetchDataSource","params":{"dataSourceId":"plans"}}]}
+        ]}
+      ]},
+      {"id":"plans_results","type":"basic","name":"Div","props":{"className":"flex flex-col gap-3"},"children":[
+        {"id":"plans_empty","type":"basic","name":"P","props":{"className":"admin-card"},"if":"{{(plans?.data?.data || []).length === 0}}","text":"$t:glitter-notification_hub.admin.empty.plans"},
+        {"id":"plan_rows","type":"basic","name":"Div","iteration":{"source":"plans.data.data","item_var":"plan","index_var":"planIndex"},"children":[{"type":"basic","name":"Div","props":{"className":"admin-card"},"children":[
+          {"type":"basic","name":"Badge","props":{"label":"{{plan.status_label}}"}},{"type":"basic","name":"Span","text":"{{plan.definition_type ?? '-'}}"},{"type":"basic","name":"Span","text":"{{plan.channel ?? '-'}}"},{"type":"basic","name":"Span","text":"{{plan.recipient_type ?? '-'}}"},{"type":"basic","name":"Span","text":"{{plan.created_at ?? '-'}}"},{"type":"basic","name":"Button","props":{"type":"button"},"text":"$t:glitter-notification_hub.admin.actions.view","actions":[{"type":"click","handler":"navigate","params":{"path":"/admin/modules/glitter-notification_hub/plans/{{plan.id}}"}}]}
+        ]}]}
+      ]}
+    ]
+  }]}
+}
